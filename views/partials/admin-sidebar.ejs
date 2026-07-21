@@ -1,0 +1,9 @@
+<aside class="admin-sidebar">
+  <a href="/admin" class="<%= currentPath === '/admin' ? 'active' : '' %>"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+  <a href="/admin/produk" class="<%= currentPath.startsWith('/admin/produk') ? 'active' : '' %>"><i class="fa-solid fa-boxes-stacked"></i> Produk & Stok</a>
+  <a href="/admin/pesanan" class="<%= currentPath === '/admin/pesanan' ? 'active' : '' %>"><i class="fa-solid fa-receipt"></i> Pesanan</a>
+  <form method="POST" action="/admin/logout" style="margin-top:20px;">
+    <%- include('csrf-field') %>
+    <button type="submit" class="btn btn-sm btn-block"><i class="fa-solid fa-right-from-bracket"></i> Keluar</button>
+  </form>
+</aside>

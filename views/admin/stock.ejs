@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="id">
+<head><%- include('../partials/head') %></head>
+<body>
+<%- include('../partials/nav') %>
+
+<div class="admin-shell">
+  <%- include('../partials/admin-sidebar') %>
+  <main class="admin-main">
+    <a href="/admin/produk" class="mono" style="text-decoration:none; font-weight:700;">← Kembali ke daftar produk</a>
+    <span class="eyebrow" style="display:block; margin-top:16px; width:fit-content;">Kelola Stok</span>
+    <h1 style="margin-top:14px;"><%= product.name %></h1>
+    <p class="mono">Kode: <%= product.id %> · Total stok saat ini: <strong><%= stock.length %></strong></p>
+
+    <div class="card" style="margin-top:20px; max-width:560px;">
+      <h3>Tambah Stok</h3>
+      <form method="POST" action="/admin/produk/<%= product.id %>/stok">
+        <%- include('../partials/csrf-field') %>
+        <div class="form-field">
+          <label for="lines">Daftar Akun (1 baris = 1 akun)</label>
+          <textarea id="lines" name="lines" rows="6" placeholder="email1@mail.com:pass1&#10;email2@mail.com:pass2" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Tambah ke Stok</button>
+      </form>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Isi Stok</th><th>Aksi</th></tr></thead>
+        <tbody>
+          <% if (stock.length === 0) { %>
+            <tr><td colspan="3">Stok kosong.</td></tr>
+          <% } %>
+          <% stock.forEach((line, i) => { %>
+            <tr>
+              <td class="mono"><%= i + 1 %></td>
+              <td class="mono"><%= line %></td>
+              <td class="actions-cell">
+                <button type="button" class="btn btn-sm" onclick="document.getElementById('edit-<%= i %>').classList.toggle('hidden-row')">Edit</button>
+                <form method="POST" action="/admin/produk/<%= product.id %>/stok/<%= i %>/hapus" onsubmit="return confirm('Hapus baris stok ini?');">
+                  <%- include('../partials/csrf-field') %>
+                  <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
+                </form>
+              </td>
+            </tr>
+            <tr id="edit-<%= i %>" class="hidden-row">
+              <td></td>
+              <td colspan="2">
+                <form method="POST" action="/admin/produk/<%= product.id %>/stok/<%= i %>/edit" style="display:flex; gap:8px;">
+                  <%- include('../partials/csrf-field') %>
+                  <input type="text" name="value" value="<%= line %>" class="mono" style="flex:1; padding:8px; border:2px solid var(--ink);">
+                  <button type="submit" class="btn btn-sm btn-primary">Simpan</button>
+                </form>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<style>.hidden-row { display: none; }</style>
+</body>
+</html>

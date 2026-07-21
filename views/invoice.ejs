@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="id">
+<head><%- include('partials/head') %></head>
+<body>
+<%- include('partials/nav') %>
+
+<section class="container" style="padding:50px 20px;">
+  <div class="invoice-card card" id="invoiceCard" data-order-id="<%= order.orderId %>" data-status="<%= order.status %>" data-expired-at="<%= order.expiredAt %>">
+    <span class="eyebrow">Invoice</span>
+    <h2 class="mono" style="font-size:1.3rem; margin-top:10px;"><%= order.orderId %></h2>
+
+    <div id="statusArea" class="invoice-status">
+      <% const s = STATUS_LABEL[order.status] || { text: order.status, tone: 'muted' }; %>
+      <span class="tag tag-<%= s.tone %>" id="statusTag"><%= s.text %></span>
+    </div>
+
+    <% if (order.status === 'pending' && qrDataUrl) { %>
+      <div class="qr-frame">
+        <img src="<%= qrDataUrl %>" alt="QR Code QRIS untuk invoice <%= order.orderId %>" width="240" height="240">
+      </div>
+      <p class="form-hint">Scan pakai e-wallet/m-banking apa saja — QRIS berlaku universal.</p>
+      <p>Kadaluarsa dalam <span class="countdown" id="countdown">--:--</span></p>
+    <% } %>
+
+    <div class="invoice-rows">
+      <div><span>Produk</span><span><%= product ? product.name : order.productId %></span></div>
+      <div><span>Jumlah</span><span><%= order.qty %> pcs</span></div>
+      <div><span>Total Bayar</span><span><%= formatRupiah(order.totalPayment || order.amount) %></span></div>
+      <div><span>Dibuat</span><span><%= formatDate(order.createdAt) %></span></div>
+    </div>
+
+    <div id="accountArea">
+      <% if (order.status === 'completed' && order.items) { %>
+        <div class="account-box">
+          <strong>Akun/kode Anda:</strong><br>
+          <% order.items.forEach((item, i) => { %>
+            <%= i + 1 %>. <%= item %><br>
+          <% }) %>
+        </div>
+      <% } %>
+    </div>
+
+    <% if (order.status === 'pending') { %>
+      <form method="POST" action="/api/orders/<%= order.orderId %>/cancel" id="cancelForm" style="margin-top:18px;">
+        <button type="submit" class="btn btn-danger btn-block" id="cancelBtn"><i class="fa-solid fa-ban"></i> Batalkan Pesanan</button>
+      </form>
+    <% } %>
+
+    <a href="/pesanan-saya" class="btn btn-block" style="margin-top:10px;"><i class="fa-solid fa-clock-rotate-left"></i> Lihat Pesanan Saya</a>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
+
+<script src="/js/invoice.js"></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="id">
+<head><%- include('partials/head') %></head>
+<body>
+<%- include('partials/nav') %>
+
+<section class="container" style="padding:90px 20px; text-align:center; position:relative;">
+  <%- include('partials/paint-blob', { style: 'top:10px; left:50%; margin-left:-180px;', width: 360, rotate: 6, color: 'var(--stone)', opacity: 0.6 }) %>
+  <div style="position:relative; z-index:1;">
+    <span class="eyebrow">404</span>
+    <h1 style="margin-top:14px;">Halaman Tidak Ditemukan</h1>
+    <p class="lead" style="margin:0 auto;"><%= typeof message !== 'undefined' ? message : 'Sepertinya lukisan yang kamu cari sudah dipindahkan galerinya.' %></p>
+    <a href="/" class="btn btn-primary" style="margin-top:20px;">Kembali ke Beranda</a>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="id">
+<head><%- include('partials/head') %></head>
+<body>
+<%- include('partials/nav') %>
+
+<section class="container" style="padding:50px 20px;">
+  <a href="/produk" class="mono" style="text-decoration:none; font-weight:700;"><i class="fa-solid fa-arrow-left"></i> Kembali ke katalog</a>
+
+  <% if (typeof error !== 'undefined' && error) { %>
+    <div class="alert alert-danger" style="margin-top:20px;"><%= error %></div>
+  <% } %>
+
+  <% if (!product) { %>
+    <div class="empty-state" style="margin-top:24px;"><p><strong>Produk tidak ditemukan.</strong></p></div>
+  <% } else { %>
+    <% if (product.bannerUrl) { %>
+      <div class="product-banner-frame">
+        <img src="<%= product.bannerUrl %>" alt="Banner <%= product.name %>" class="product-banner" onerror="this.parentElement.style.display='none'">
+      </div>
+    <% } %>
+    <div class="detail-grid">
+      <div>
+        <span class="tag <%= stock > 0 ? 'tag-ok' : 'tag-danger' %>"><%= stock > 0 ? 'Stok Tersedia' : 'Stok Habis' %></span>
+        <h1 style="margin-top:14px;"><%= product.name %></h1>
+        <p class="lead"><%= product.description %></p>
+        <p class="price mono" style="font-size:1.6rem; font-weight:700; color:var(--blue-deep);">
+          Rp<%= product.price.toLocaleString('id-ID') %> <span style="font-size:0.9rem; color:var(--stone-dark); font-weight:400;">/ pcs</span>
+        </p>
+        <div class="stock-row mono"><span class="dot <%= stock > 0 ? 'dot-ok' : 'dot-off' %>"></span> Stok tersisa: <%= stock %></div>
+      </div>
+
+      <div class="card">
+        <% if (stock > 0) { %>
+          <form method="POST" action="/order">
+            <input type="hidden" name="productId" value="<%= product.id %>">
+            <div class="form-field">
+              <label for="qty">Jumlah Pesanan</label>
+              <div class="qty-control">
+                <button type="button" id="qtyDec" aria-label="Kurangi jumlah"><i class="fa-solid fa-minus"></i></button>
+                <input type="number" id="qty" name="qty" value="1" min="1" max="<%= stock %>" readonly>
+                <button type="button" id="qtyInc" aria-label="Tambah jumlah"><i class="fa-solid fa-plus"></i></button>
+              </div>
+              <p class="form-hint">Maks <%= stock %> pcs (sesuai stok tersedia)</p>
+            </div>
+            <div class="form-field">
+              <div class="form-hint" style="font-size:0.85rem;">Total bayar</div>
+              <div id="totalPrice" class="mono" style="font-size:1.4rem; font-weight:700;">Rp<%= product.price.toLocaleString('id-ID') %></div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block"><i class="fa-solid fa-qrcode"></i> Buat Invoice QRIS</button>
+          </form>
+        <% } else { %>
+          <p><strong>Maaf, stok produk ini sedang habis.</strong></p>
+          <a href="/produk" class="btn btn-block">Lihat Produk Lain</a>
+        <% } %>
+      </div>
+    </div>
+  <% } %>
+</section>
+
+<%- include('partials/footer') %>
+
+<% if (product && stock > 0) { %>
+<script>
+  const price = <%= product.price %>;
+  const maxStock = <%= stock %>;
+  const qtyInput = document.getElementById('qty');
+  const totalEl = document.getElementById('totalPrice');
+
+  function updateTotal() {
+    const qty = parseInt(qtyInput.value, 10) || 1;
+    totalEl.textContent = 'Rp' + (price * qty).toLocaleString('id-ID');
+  }
+
+  document.getElementById('qtyInc').addEventListener('click', () => {
+    qtyInput.value = Math.min(maxStock, parseInt(qtyInput.value, 10) + 1);
+    updateTotal();
+  });
+  document.getElementById('qtyDec').addEventListener('click', () => {
+    qtyInput.value = Math.max(1, parseInt(qtyInput.value, 10) - 1);
+    updateTotal();
+  });
+</script>
+<% } %>
+</body>
+</html>

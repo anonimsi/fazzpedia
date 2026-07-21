@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="id">
+<head><%- include('partials/head') %></head>
+<body>
+<%- include('partials/nav') %>
+
+<section class="container" style="padding:50px 20px; position:relative;">
+  <%- include('partials/paint-blob', { style: 'top:0; right:-90px;', width: 300, rotate: 15, color: 'var(--blue)', opacity: 0.5 }) %>
+  <span class="eyebrow">Panduan</span>
+  <h1 style="margin-top:14px;">Cara Order</h1>
+  <p class="lead">Delapan langkah dari buka katalog sampai akun ada di tangan.</p>
+
+  <ol class="steps">
+    <li class="step"><span class="step-num">1</span><div><strong>Buka Katalog</strong><p>Pilih produk yang kamu butuhkan dari menu Katalog.</p></div></li>
+    <li class="step"><span class="step-num">2</span><div><strong>Atur Jumlah</strong><p>Tentukan berapa pcs yang mau dibeli, sesuai stok yang tersedia.</p></div></li>
+    <li class="step"><span class="step-num">3</span><div><strong>Buat Invoice QRIS</strong><p>Tekan tombol "Buat Invoice QRIS", bot akan membuatkan kode QR pembayaran.</p></div></li>
+    <li class="step"><span class="step-num">4</span><div><strong>Scan & Bayar</strong><p>Scan QR pakai e-wallet atau m-banking apa saja — QRIS berlaku universal di semua aplikasi.</p></div></li>
+    <li class="step"><span class="step-num">5</span><div><strong>Tunggu Sebentar</strong><p>Halaman invoice otomatis mengecek status pembayaran setiap beberapa detik.</p></div></li>
+    <li class="step"><span class="step-num">6</span><div><strong>Akun Terkirim Otomatis</strong><p>Begitu pembayaran diterima, data akun langsung tampil di halaman yang sama.</p></div></li>
+    <li class="step"><span class="step-num">7</span><div><strong>Simpan Baik-Baik</strong><p>Screenshot atau catat akun tersebut. Halaman invoice bisa dibuka lagi lewat "Pesanan Saya".</p></div></li>
+    <li class="step"><span class="step-num">8</span><div><strong>Selesai</strong><p>Kalau ada kendala, invoice yang belum dibayar akan otomatis kadaluarsa sesuai batas waktu yang tertera.</p></div></li>
+  </ol>
+
+  <div style="margin-top:36px;">
+    <a href="/produk" class="btn btn-primary"><i class="fa-solid fa-cart-shopping"></i> Mulai Order Sekarang</a>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
+</body>
+</html>

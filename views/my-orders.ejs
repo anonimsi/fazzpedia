@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="id">
+<head><%- include('partials/head') %></head>
+<body>
+<%- include('partials/nav') %>
+
+<section class="container" style="padding:50px 20px;">
+  <span class="eyebrow">Riwayat</span>
+  <h1 style="margin-top:14px;">Pesanan Saya</h1>
+  <p class="lead">Daftar ini dikenali lewat cookie di perangkat Anda — bukan akun. Kalau pindah perangkat/browser, riwayat tidak akan muncul di sana.</p>
+
+  <% if (orders.length === 0) { %>
+    <div class="empty-state">
+      <p><strong>Belum ada pesanan.</strong></p>
+      <a href="/produk" class="btn btn-primary" style="margin-top:14px;"><i class="fa-solid fa-cart-shopping"></i> Mulai Order</a>
+    </div>
+  <% } else { %>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Invoice</th><th>Produk</th><th>Qty</th><th>Total</th><th>Status</th><th>Tanggal</th></tr>
+        </thead>
+        <tbody>
+          <% orders.forEach((o) => { const s = STATUS_LABEL[o.status] || { text: o.status, tone: 'muted' }; %>
+            <tr>
+              <td class="mono"><a href="/invoice/<%= o.orderId %>"><%= o.orderId %></a></td>
+              <td><%= o.product ? o.product.name : o.productId %></td>
+              <td><%= o.qty %></td>
+              <td class="mono"><%= formatRupiah(o.amount) %></td>
+              <td><span class="tag tag-<%= s.tone %>"><%= s.text %></span></td>
+              <td class="mono"><%= formatDate(o.createdAt) %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</section>
+
+<%- include('partials/footer') %>
+</body>
+</html>

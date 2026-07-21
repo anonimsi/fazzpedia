@@ -1,0 +1,23 @@
+<header class="navbar">
+  <div class="navbar-inner">
+    <a href="/" class="brand">
+      <span class="brand-mark" aria-hidden="true"><img src="https://cdn.fazzcode.eu.cc/cdn/1784587207549.png" width="100" heigth="100"/></span>
+      <%= shopName %>
+    </a>
+
+    <button type="button" class="hamburger-btn" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Buka menu navigasi">
+      <span></span><span></span><span></span>
+    </button>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/" class="<%= currentPath === '/' ? 'active' : '' %>"><i class="fa-solid fa-house"></i> Beranda</a></li>
+      <li><a href="/produk" class="<%= currentPath.startsWith('/produk') ? 'active' : '' %>"><i class="fa-solid fa-store"></i> Katalog</a></li>
+      <li><a href="/tutorial" class="<%= currentPath === '/tutorial' ? 'active' : '' %>"><i class="fa-solid fa-circle-info"></i> Cara Order</a></li>
+      <li><a href="/pesanan-saya" class="<%= currentPath === '/pesanan-saya' ? 'active' : '' %>"><i class="fa-solid fa-receipt"></i> Pesanan Saya</a></li>
+      <% if (isAdmin) { %>
+        <li><a href="/admin" class="<%= currentPath.startsWith('/admin') ? 'active' : '' %>"><i class="fa-solid fa-shield-halved"></i> Panel Admin</a></li>
+      <% } %>
+    </ul>
+  </div>
+</header>
+<script src="/js/nav.js"></script>

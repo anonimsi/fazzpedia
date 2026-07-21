@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="id">
+<head><%- include('../partials/head') %></head>
+<body>
+<div class="login-shell">
+  <%- include('../partials/paint-blob', { style: 'top:-80px; left:-80px;', width: 340, rotate: -10, color: 'var(--blue)', opacity: 0.85 }) %>
+  <%- include('../partials/paint-blob', { style: 'bottom:-100px; right:-100px;', width: 300, rotate: 18, color: 'var(--stone)', opacity: 0.7 }) %>
+
+  <div class="card login-card">
+    <span class="eyebrow">Khusus Admin</span>
+    <h2 style="margin-top:14px;">Masuk Panel</h2>
+
+    <% if (error) { %>
+      <div class="alert alert-danger"><%= error %></div>
+    <% } %>
+
+    <form method="POST" action="/admin/login">
+      <%- include('../partials/csrf-field') %>
+      <div class="form-field">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required autofocus>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Masuk</button>
+    </form>
+    <p class="form-hint" style="margin-top:16px;"><a href="/">← Kembali ke toko</a></p>
+  </div>
+</div>
+</body>
+</html>

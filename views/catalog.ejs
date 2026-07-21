@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="id">
+<head><%- include('partials/head') %></head>
+<body>
+<%- include('partials/nav') %>
+
+<section class="container" style="padding:50px 20px 20px; position:relative;">
+
+  <span class="eyebrow">Katalog</span>
+  <h1 style="margin-top:14px;">Semua Produk</h1>
+  <p class="lead" style="max-width:56ch;">Pilih akun yang kamu butuhkan. Stok diperbarui langsung, harga sudah final.</p>
+
+  <% if (products.length === 0) { %>
+    <div class="empty-state">
+      <p><strong>Belum ada produk.</strong> Cek lagi nanti ya.</p>
+    </div>
+  <% } else { %>
+    <div class="product-grid">
+      <% products.forEach((p) => { %>
+        <a href="/produk/<%= p.id %>" class="product-card">
+          <% if (p.bannerUrl) { %>
+            <img src="<%= p.bannerUrl %>" alt="" class="product-card-thumb" onerror="this.style.display='none'">
+          <% } %>
+          <span class="tag <%= p.stock > 0 ? 'tag-ok' : 'tag-danger' %>"><%= p.stock > 0 ? 'Tersedia' : 'Habis' %></span>
+          <h3><%= p.name %></h3>
+          <span class="price">Rp<%= p.price.toLocaleString('id-ID') %></span>
+          <div class="stock-row">
+            <span class="dot <%= p.stock > 0 ? 'dot-ok' : 'dot-off' %>"></span>
+            Stok: <%= p.stock %>
+          </div>
+        </a>
+      <% }) %>
+    </div>
+  <% } %>
+</section>
+
+<%- include('partials/footer') %>
+</body>
+</html>

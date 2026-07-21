@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="id">
+<head><%- include('../partials/head') %></head>
+<body>
+<%- include('../partials/nav') %>
+
+<div class="admin-shell">
+  <%- include('../partials/admin-sidebar') %>
+  <main class="admin-main">
+    <span class="eyebrow">Panel Admin</span>
+    <h1 style="margin-top:14px;">Produk & Stok</h1>
+
+    <% if (error) { %>
+      <div class="alert alert-danger"><i class="fa-solid fa-triangle-exclamation"></i> <%= error %></div>
+    <% } %>
+
+    <div class="card" style="margin-top:20px; max-width:520px;">
+      <h3><i class="fa-solid fa-circle-plus"></i> Tambah Produk Baru</h3>
+      <form method="POST" action="/admin/produk">
+        <%- include('../partials/csrf-field') %>
+        <div class="form-field">
+          <label for="id">Kode Unik</label>
+          <input type="text" id="id" name="id" placeholder="netflix1u" required>
+          <p class="form-hint">Tanpa spasi, dipakai sebagai identitas produk.</p>
+        </div>
+        <div class="form-field">
+          <label for="name">Nama Produk</label>
+          <input type="text" id="name" name="name" placeholder="Netflix Private 1 Bulan" required>
+        </div>
+        <div class="form-field">
+          <label for="price">Harga (Rp)</label>
+          <input type="number" id="price" name="price" placeholder="15000" min="1" required>
+        </div>
+        <div class="form-field">
+          <label for="description">Deskripsi</label>
+          <textarea id="description" name="description" placeholder="Garansi 30 hari, private/1 profil."></textarea>
+        </div>
+        <div class="form-field">
+          <label for="bannerUrl"><i class="fa-regular fa-image"></i> URL Banner (opsional)</label>
+          <input type="text" id="bannerUrl" name="bannerUrl" placeholder="https://raw.githubusercontent.com/user/repo/main/banner.jpg">
+          <p class="form-hint">Link gambar langsung (raw), diawali http:// atau https://. Kosongkan kalau tidak perlu banner.</p>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Tambah Produk</button>
+      </form>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Banner</th><th>Kode</th><th>Nama</th><th>Harga</th><th>Stok</th><th>Aksi</th></tr>
+        </thead>
+        <tbody>
+          <% if (products.length === 0) { %>
+            <tr><td colspan="6">Belum ada produk.</td></tr>
+          <% } %>
+          <% products.forEach((p) => { %>
+            <tr>
+              <td>
+                <% if (p.bannerUrl) { %>
+                  <img src="<%= p.bannerUrl %>" alt="Banner <%= p.name %>" style="width:64px; height:40px; object-fit:cover; border:2px solid var(--ink); border-radius:6px;" onerror="this.style.display='none'">
+                <% } else { %>
+                  <span class="mono form-hint">—</span>
+                <% } %>
+              </td>
+              <td class="mono"><%= p.id %></td>
+              <td><%= p.name %></td>
+              <td class="mono"><%= formatRupiah(p.price) %></td>
+              <td><span class="tag <%= p.stock > 0 ? 'tag-ok' : 'tag-danger' %>"><%= p.stock %></span></td>
+              <td class="actions-cell">
+                <a href="/admin/produk/<%= p.id %>/stok" class="btn btn-sm"><i class="fa-solid fa-boxes-stacked"></i> Stok</a>
+                <button type="button" class="btn btn-sm" onclick="document.getElementById('banner-<%= p.id %>').classList.toggle('hidden-row')">
+                  <i class="fa-regular fa-image"></i> Banner
+                </button>
+                <form method="POST" action="/admin/produk/<%= p.id %>/hapus" onsubmit="return confirm('Hapus produk ini beserta stoknya?');">
+                  <%- include('../partials/csrf-field') %>
+                  <button type="submit" class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i> Hapus</button>
+                </form>
+              </td>
+            </tr>
+            <tr id="banner-<%= p.id %>" class="hidden-row">
+              <td></td>
+              <td colspan="5">
+                <form method="POST" action="/admin/produk/<%= p.id %>/banner" style="display:flex; gap:8px; flex-wrap:wrap;">
+                  <%- include('../partials/csrf-field') %>
+                  <input type="text" name="bannerUrl" value="<%= p.bannerUrl || '' %>" placeholder="https://raw.githubusercontent.com/..." class="mono" style="flex:1; min-width:200px; padding:8px; border:2px solid var(--ink); border-radius:var(--radius-sm);">
+                  <button type="submit" class="btn btn-sm btn-primary">Simpan Banner</button>
+                </form>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<style>.hidden-row { display: none; }</style>
+</body>
+</html>

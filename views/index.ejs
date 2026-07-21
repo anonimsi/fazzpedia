@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="id">
+<head><%- include('partials/head') %></head>
+<body>
+<%- include('partials/nav') %>
+
+<section class="hero">
+  <%- include('partials/paint-blob', { style: 'top:-90px; right:-100px;', width: 460, rotate: -8, color: 'var(--blue)', opacity: 0.9 }) %>
+  <%- include('partials/paint-blob', { style: 'bottom:-140px; left:-120px;', width: 340, rotate: 20, color: 'var(--stone)', opacity: 0.7 }) %>
+  <div class="container hero-inner">
+    <span class="eyebrow">Semoga Layanan Kami Memuaskan Anda</span>
+    <h1>Akun Premium, <span class="brush-underline">Beres</span> Dalam Semenit.</h1>
+    <p class="lead">Netflix, Spotify, Canva, dan akun langganan lain — scan QRIS, bot kirim akunnya otomatis begitu bayar masuk. Tidak perlu chat admin, tidak perlu nunggu jam kerja.</p>
+    <div class="hero-cta">
+      <a href="/produk" class="btn btn-primary"><i class="fa-solid fa-store"></i> Lihat Katalog</a>
+      <a href="/tutorial" class="btn btn-dark"><i class="fa-solid fa-circle-info"></i> Cara Order</a>
+    </div>
+  </div>
+</section>
+
+<section class="container" style="padding-top:50px;">
+  <h2>Produk Unggulan</h2>
+  <% if (products.length === 0) { %>
+    <div class="empty-state">
+      <p><strong>Katalog masih kosong.</strong> Admin belum menambahkan produk apa pun.</p>
+    </div>
+  <% } else { %>
+    <div class="product-grid">
+      <% products.forEach((p) => { %>
+        <a href="/produk/<%= p.id %>" class="product-card">
+          <% if (p.bannerUrl) { %>
+            <img src="<%= p.bannerUrl %>" alt="" class="product-card-thumb" onerror="this.style.display='none'">
+          <% } %>
+          <span class="tag <%= p.stock > 0 ? 'tag-ok' : 'tag-danger' %>"><%= p.stock > 0 ? 'Tersedia' : 'Habis' %></span>
+          <h3><%= p.name %></h3>
+          <span class="price">Rp<%= p.price.toLocaleString('id-ID') %></span>
+          <div class="stock-row">
+            <span class="dot <%= p.stock > 0 ? 'dot-ok' : 'dot-off' %>"></span>
+            Stok: <%= p.stock %>
+          </div>
+        </a>
+      <% }) %>
+    </div>
+    <div style="margin-top:30px;">
+      <a href="/produk" class="btn">Lihat Semua Produk →</a>
+    </div>
+  <% } %>
+</section>
+
+<%- include('partials/footer') %>
+</body>
+</html>

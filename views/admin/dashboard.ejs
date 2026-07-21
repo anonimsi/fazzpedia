@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="id">
+<head><%- include('../partials/head') %></head>
+<body>
+<%- include('../partials/nav') %>
+
+<div class="admin-shell">
+  <%- include('../partials/admin-sidebar') %>
+  <main class="admin-main">
+    <span class="eyebrow">Panel Admin</span>
+    <h1 style="margin-top:14px;">Dashboard</h1>
+    <p class="lead">Ringkasan cepat toko kamu hari ini.</p>
+
+    <div class="stat-grid">
+      <div class="stat-card"><div class="num"><%= stats.totalProducts %></div><div class="label">Total Produk</div></div>
+      <div class="stat-card"><div class="num"><%= stats.totalStock %></div><div class="label">Total Stok</div></div>
+      <div class="stat-card"><div class="num"><%= stats.pending %></div><div class="label">Invoice Pending</div></div>
+      <div class="stat-card"><div class="num"><%= stats.needsAttention %></div><div class="label">Perlu Tindak Lanjut</div></div>
+      <div class="stat-card"><div class="num"><%= stats.completedToday %></div><div class="label">Selesai Hari Ini</div></div>
+    </div>
+
+    <div style="margin-top:30px; display:flex; gap:14px; flex-wrap:wrap;">
+      <a href="/admin/produk" class="btn btn-primary"><i class="fa-solid fa-boxes-stacked"></i> Kelola Produk & Stok</a>
+      <a href="/admin/pesanan" class="btn">Lihat Pesanan</a>
+    </div>
+  </main>
+</div>
+</body>
+</html>

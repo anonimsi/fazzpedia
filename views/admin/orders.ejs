@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="id">
+<head><%- include('../partials/head') %></head>
+<body>
+<%- include('../partials/nav') %>
+
+<div class="admin-shell">
+  <%- include('../partials/admin-sidebar') %>
+  <main class="admin-main">
+    <span class="eyebrow">Panel Admin</span>
+    <h1 style="margin-top:14px;">Pesanan Perlu Perhatian</h1>
+    <p class="lead">Menampilkan invoice yang masih menunggu pembayaran atau sudah dibayar tapi stok habis.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Invoice</th><th>Produk</th><th>Qty</th><th>Total</th><th>Status</th><th>Dibuat</th></tr></thead>
+        <tbody>
+          <% if (orders.length === 0) { %>
+            <tr><td colspan="6">Tidak ada pesanan yang perlu perhatian saat ini.</td></tr>
+          <% } %>
+          <% orders.forEach((o) => { %>
+            <tr>
+              <td class="mono"><a href="/invoice/<%= o.orderId %>"><%= o.orderId %></a></td>
+              <td><%= o.product ? o.product.name : o.productId %></td>
+              <td><%= o.qty %></td>
+              <td class="mono"><%= formatRupiah(o.amount) %></td>
+              <td>
+                <% if (o.status === 'pending') { %><span class="tag tag-warn">Pending</span><% } %>
+                <% if (o.status === 'paid_out_of_stock') { %><span class="tag tag-danger">Dibayar, Stok Habis</span><% } %>
+              </td>
+              <td class="mono"><%= formatDate(o.createdAt) %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>
+</body>
+</html>
